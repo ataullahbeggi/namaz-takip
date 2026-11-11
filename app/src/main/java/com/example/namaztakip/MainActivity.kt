@@ -58,7 +58,7 @@ class PrayerStore(context: Context) {
     // Anahtar biçimi: "2026-10-13|2" (tarih|vakit indeksi)
     private var checked by mutableStateOf(prefs.getStringSet("checked", emptySet()) ?: emptySet())
 
-    fun setStartDate(date: LocalDate) {
+    fun updateStartDate(date: LocalDate) {
         startDate = date
         prefs.edit().putString("start_date", date.toString()).apply()
     }
@@ -173,7 +173,7 @@ fun HomeScreen(store: PrayerStore, onOpenDays: () -> Unit) {
                 TextButton(onClick = {
                     pickerState.selectedDateMillis?.let { ms ->
                         val picked = Instant.ofEpochMilli(ms).atZone(ZoneOffset.UTC).toLocalDate()
-                        store.setStartDate(if (picked.isAfter(today)) today else picked)
+                        store.updateStartDate(if (picked.isAfter(today)) today else picked)
                     }
                     showPicker = false
                 }) { Text("Tamam") }
